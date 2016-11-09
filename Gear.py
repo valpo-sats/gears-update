@@ -21,66 +21,66 @@ XL_GEAR_TOOTH_PROFILE = [["NAME", "XL"], ["TOOTHPRINT", XL_GEAR_TOOTHPRINT], ["S
 #More Profiles to come...
 
 def Remove_Object(Object_Name, Doc_Name = ""):
-	if Doc_Name == "":
-		FreeCAD.ActiveDocument.removeObject(Object_Name)
-	else:
-		FreeCAD.getDocument(Doc_Name).removeObject(Object_Name)
-	return
+    if Doc_Name == "":
+        FreeCAD.ActiveDocument.removeObject(Object_Name)
+    else:
+        FreeCAD.getDocument(Doc_Name).removeObject(Object_Name)
+    return
 
 def Make_a_Polygon_Sketch(Name = "Unnamed_Polygon", Nodes = [FreeCAD.Vector(0,0,0)], Closed = False, Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(0,0,0))):
-	New_Polygon = FreeCAD.ActiveDocument.addObject("Part::Polygon", Name)
-	New_Polygon.Nodes = Nodes
-	New_Polygon.Close = Closed
-	New_Polygon.Placement = Placement
-	FreeCAD.ActiveDocument.recompute()
-	return New_Polygon
+    New_Polygon = FreeCAD.ActiveDocument.addObject("Part::Polygon", Name)
+    New_Polygon.Nodes = Nodes
+    New_Polygon.Close = Closed
+    New_Polygon.Placement = Placement
+    FreeCAD.ActiveDocument.recompute()
+    return New_Polygon
 
 def Make_a_Circle_Sketch(Name = "Unnamed_Circle", Radius = 1, Angle0 = 0.0, Angle1 = 0.0, Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(0,0,0))):
-	New_Circle = FreeCAD.ActiveDocument.addObject("Part::Circle", Name)
-	New_Circle.Radius = Radius
-	New_Circle.Angle0 = Angle0
-	New_Circle.Angle1 = Angle1
-	New_Circle.Placement = Placement
-	FreeCAD.ActiveDocument.recompute()
-	return New_Circle
+    New_Circle = FreeCAD.ActiveDocument.addObject("Part::Circle", Name)
+    New_Circle.Radius = Radius
+    New_Circle.Angle0 = Angle0
+    New_Circle.Angle1 = Angle1
+    New_Circle.Placement = Placement
+    FreeCAD.ActiveDocument.recompute()
+    return New_Circle
 
 def Make_an_Extrusion(Target_Sketch_Name, Extrusion_Name = "Unnamed_Extrusion", Extrusion_Array = (0,0,0), Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(0,0,0)), Solid = (False), TaperAngle = (0)):
-	Current_Extrusion = FreeCAD.ActiveDocument.addObject("Part::Extrusion", Extrusion_Name)
-	Current_Extrusion.Base = FreeCAD.ActiveDocument.getObjectsByLabel(Target_Sketch_Name)[0]
-	Current_Extrusion.Dir = Extrusion_Array
-	Current_Extrusion.Solid = Solid
-	Current_Extrusion.TaperAngle = TaperAngle
-	Current_Extrusion.Placement = Placement
-	FreeCAD.ActiveDocument.getObject(Target_Sketch_Name).ViewObject.Visibility = False
-	FreeCAD.ActiveDocument.recompute()
-	return Current_Extrusion
+    Current_Extrusion = FreeCAD.ActiveDocument.addObject("Part::Extrusion", Extrusion_Name)
+    Current_Extrusion.Base = FreeCAD.ActiveDocument.getObjectsByLabel(Target_Sketch_Name)[0]
+    Current_Extrusion.Dir = Extrusion_Array
+    Current_Extrusion.Solid = Solid
+    Current_Extrusion.TaperAngle = TaperAngle
+    Current_Extrusion.Placement = Placement
+    FreeCAD.ActiveDocument.getObject(Target_Sketch_Name).ViewObject.Visibility = False
+    FreeCAD.ActiveDocument.recompute()
+    return Current_Extrusion
 
 def Make_a_Cut(Base_Object_Name, Tool_Object_Name, Cut_Name = "Unnamed_Cut"):
-	Base = FreeCAD.ActiveDocument.getObjectsByLabel(Base_Object_Name)[0]
-	Tool = FreeCAD.ActiveDocument.getObjectsByLabel(Tool_Object_Name)[0]
-	New_Cut = FreeCAD.ActiveDocument.addObject("Part::Cut", Cut_Name)
-	New_Cut.Base = Base
-	New_Cut.Tool = Tool
-	Base.ViewObject.Visibility = False
-	Tool.ViewObject.Visibility = False
-	New_Cut.ViewObject.ShapeColor = Base.ViewObject.ShapeColor
-	New_Cut.ViewObject.DisplayMode = Base.ViewObject.DisplayMode
-	FreeCAD.ActiveDocument.recompute()
-	return New_Cut
+    Base = FreeCAD.ActiveDocument.getObjectsByLabel(Base_Object_Name)[0]
+    Tool = FreeCAD.ActiveDocument.getObjectsByLabel(Tool_Object_Name)[0]
+    New_Cut = FreeCAD.ActiveDocument.addObject("Part::Cut", Cut_Name)
+    New_Cut.Base = Base
+    New_Cut.Tool = Tool
+    Base.ViewObject.Visibility = False
+    Tool.ViewObject.Visibility = False
+    New_Cut.ViewObject.ShapeColor = Base.ViewObject.ShapeColor
+    New_Cut.ViewObject.DisplayMode = Base.ViewObject.DisplayMode
+    FreeCAD.ActiveDocument.recompute()
+    return New_Cut
 
 class Gear:
     """Base class for building a gear."""
 
-	Tooth_profile_name 	= ""
-	Toothprint 			= []
-	Tooth_Width 		= 0
-	Tooth_Depth 		= 0
-	Tooth_Pitch 		= 0
-	Pitch_Line_Offset 	= 0
+    Tooth_profile_name     = ""
+    Toothprint             = []
+    Tooth_Width         = 0
+    Tooth_Depth         = 0
+    Tooth_Pitch         = 0
+    Pitch_Line_Offset     = 0
 
-	Sketches 			= []
-	Extrusions 			= []
-	Cuts 				= []
+    Sketches             = []
+    Extrusions             = []
+    Cuts                 = []
 
     def __init__(self,
                  teeth=6,
@@ -93,30 +93,30 @@ class Gear:
         self.Tooth_Depth += Additional_Tooth_Depth
 
 
-	def Ready_for_Computation(self):
-		if self.Toothprint == []:
-			return False
-		elif self.Tooth_Pitch < 0:
-			print("ERROR! Value Tooth_Pitch must be greatter than 0")
-			return False
-		elif self.Pitch_Line_Offset < 0:
-			print("ERROR! Value Pitch_Line_Offset must be greatter than 0")
-			return False
-		elif self.Number_of_Teeth <= 2:
-			print("ERROR! Value Number_of_Teeth must be greatter than or equal to 2")
-			return False
-		elif self.Gear_Width < 0:
-			print("ERROR! Value Gear_Width must be greatter than 0")
-			return False
-		else:
-			return True
+    def Ready_for_Computation(self):
+        if self.Toothprint == []:
+            return False
+        elif self.Tooth_Pitch < 0:
+            print("ERROR! Value Tooth_Pitch must be greatter than 0")
+            return False
+        elif self.Pitch_Line_Offset < 0:
+            print("ERROR! Value Pitch_Line_Offset must be greatter than 0")
+            return False
+        elif self.Number_of_Teeth <= 2:
+            print("ERROR! Value Number_of_Teeth must be greatter than or equal to 2")
+            return False
+        elif self.Gear_Width < 0:
+            print("ERROR! Value Gear_Width must be greatter than 0")
+            return False
+        else:
+            return True
 
 
-	def Draw_Gear(self):
-		if not self.Ready_for_Computation():
+    def Draw_Gear(self):
+        if not self.Ready_for_Computation():
             # better to raise an exception here
-			print("There are invalid values present. The Gear is not ready to be drawn.")
-			return
+            print("There are invalid values present. The Gear is not ready to be drawn.")
+            return
 
         pulley_radius = self.Get_Tooth_Spacing()
 
@@ -128,7 +128,7 @@ class Gear:
         print("######################################################################################")
         print("Tooth width scale: " + str(tooth_width_scale))
         print("Tooth depth scale: " + str(tooth_depth_scale))
-        print("Tooth width:	" + str(self.Tooth_Width))
+        print("Tooth width:    " + str(self.Tooth_Width))
         print("Tooth depth: " + str(self.Tooth_Depth))
         print("Additional tooth depth: " + str(self.Additional_Tooth_Depth))
         print("Temporary Toothprint: " + str(Temporary_Toothprint))
@@ -164,39 +164,52 @@ class Gear:
             current_tooth_number = current_tooth_number + 1
 
 
-	def Get_Tooth_Spacing(self):
-		return ((self.Number_of_Teeth * self.Tooth_Pitch) / (pi * 2) - self.Pitch_Line_Offset)
+    def Get_Tooth_Spacing(self):
+        return ((self.Number_of_Teeth * self.Tooth_Pitch) / (pi * 2) - self.Pitch_Line_Offset)
 
 
-	def Remove_Cuts(self):
+    def Remove_Cuts(self):
         for Cut in reversed(self.Cuts):
-			FreeCAD.ActiveDocument.removeObject(Cut[1].Label)
-		self.Cuts = []
-		FreeCAD.ActiveDocument.recompute()
+            FreeCAD.ActiveDocument.removeObject(Cut[1].Label)
+        self.Cuts = []
+        FreeCAD.ActiveDocument.recompute()
 
 
-	def Remove_Extrusions(self):
+    def Remove_Extrusions(self):
         for Extrusion in reversed(self.Extrusions):
-			FreeCAD.ActiveDocument.removeObject(Extrusion[1].Label)
-		self.Extrusions = []
-		FreeCAD.ActiveDocument.recompute()
+            FreeCAD.ActiveDocument.removeObject(Extrusion[1].Label)
+        self.Extrusions = []
+        FreeCAD.ActiveDocument.recompute()
 
 
-	def Remove_Sketches(self):
-		for Sketch in reversed(self.Sketches):
-			FreeCAD.ActiveDocument.removeObject(Sketch[1].Label)
-		self.Sketches = []
-		FreeCAD.ActiveDocument.recompute()
+    def Remove_Sketches(self):
+        for Sketch in reversed(self.Sketches):
+            FreeCAD.ActiveDocument.removeObject(Sketch[1].Label)
+        self.Sketches = []
+        FreeCAD.ActiveDocument.recompute()
 
 
-	def Remove_Gear(self):
-		self.Remove_Cuts()
-		self.Remove_Extrusions()
-		self.Remove_Sketches()
+    def Remove_Gear(self):
+        self.Remove_Cuts()
+        self.Remove_Extrusions()
+        self.Remove_Sketches()
+
+
+
+class XLGear(Gear):
+    Tooth_profile_name = "XL"
+    Toothprint = XL_GEAR_TOOTHPRINT
+    Tooth_Width = 3.051
+    Tooth_Depth = 1.27
+    Tooth_Pitch = 5.08
+    Pitch_Line_Offset = 0.254
+
 
 
 ##Test Code. This is not a part of the program!
-#New_Gear = Gear(XL_GEAR_TOOTH_PROFILE, 15, Gear_Width_OVR = 3)				# Will make a gear with radius 11.77520211936695 mm
+#New_Gear = Gear(XL_GEAR_TOOTH_PROFILE, 15, Gear_Width_OVR = 3)                # Will make a gear with radius 11.77520211936695 mm
 #New_Gear.Draw_Gear()
 
+g = XLGear(15, 5)
+g.Draw_Gear()
 
