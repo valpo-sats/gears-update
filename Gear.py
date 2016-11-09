@@ -159,56 +159,37 @@ class Gear:
                 self.Cuts.append(["Tooth" + str(current_tooth_number), Make_a_Cut("Cut_Tooth" + str(current_tooth_number - 1), "Extrusion_Tooth" + str(current_tooth_number), Cut_Name = "Cut_Tooth" + str(current_tooth_number))])
 
             current_tooth_number = current_tooth_number + 1
-        return
 
 
 	def Get_Tooth_Spacing(self):
 		return ((self.Number_of_Teeth * self.Tooth_Pitch) / (pi * 2) - self.Pitch_Line_Offset)
 
+
 	def Remove_Cuts(self):
-
-		self.Cuts.reverse()
-
-		for Cut in self.Cuts:
+        for Cut in reversed(self.Cuts):
 			FreeCAD.ActiveDocument.removeObject(Cut[1].Label)
-
 		self.Cuts = []
-
 		FreeCAD.ActiveDocument.recompute()
-		return
+
 
 	def Remove_Extrusions(self):
-
-		self.Extrusions.reverse()
-
-		for Extrusion in self.Extrusions:
+        for Extrusion in reversed(self.Extrusions):
 			FreeCAD.ActiveDocument.removeObject(Extrusion[1].Label)
-
 		self.Extrusions = []
-
 		FreeCAD.ActiveDocument.recompute()
-		return
+
 
 	def Remove_Sketches(self):
-
-		self.Sketches.reverse()
-
-		for Sketch in self.Sketches:
+		for Sketch in reversed(self.Sketches):
 			FreeCAD.ActiveDocument.removeObject(Sketch[1].Label)
-
 		self.Sketches = []
-
 		FreeCAD.ActiveDocument.recompute()
-		return
+
 
 	def Remove_Gear(self):
-
 		self.Remove_Cuts()
-
 		self.Remove_Extrusions()
-
 		self.Remove_Sketches()
-		return
 
 
 ##Test Code. This is not a part of the program!
