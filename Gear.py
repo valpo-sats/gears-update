@@ -132,9 +132,9 @@ class Gear:
         print("######################################################################################")
         #REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE#
 
-        self.Gear_Radius  = sqrt(pulley_radius**2 - (self.Tooth_Width / 2)**2)   # DJW: what is this about?
+        Gear_Radius  = sqrt(pulley_radius**2 - (self.Tooth_Width / 2)**2)   # DJW: what is this about?
 
-        self.Sketches.append(["Main_Gear_Body", Make_a_Circle_Sketch(Name = "Sketch_Main_Gear_Body", Radius = self.Gear_Radius)])
+        self.Sketches.append(["Main_Gear_Body", Make_a_Circle_Sketch(Name = "Sketch_Main_Gear_Body", Radius = Gear_Radius)])
         self.Extrusions.append(["Main_Gear_Body", Make_an_Extrusion("Sketch_Main_Gear_Body", Extrusion_Name = "Extrusion_Main_Gear_Body", Extrusion_Array = (0,0,self.Gear_Width), Solid = (True))])
 
         #Temporary_Toothprint = deepcopy(self.Toothprint)
@@ -147,8 +147,8 @@ class Gear:
 
         for current_gear in range(0,self.Number_of_Teeth):
             current_rotation = 0 + (360 / self.Number_of_Teeth) * current_gear
-            current_position_x = self.Gear_Radius * cos(radians(current_rotation - 90 ))
-            current_position_y = self.Gear_Radius * sin(radians(current_rotation - 90))
+            current_position_x = Gear_Radius * cos(radians(current_rotation - 90 ))
+            current_position_y = Gear_Radius * sin(radians(current_rotation - 90))
 
             self.Sketches.append(["Tooth" + str(current_tooth_number), Make_a_Polygon_Sketch(Name = "Sketch_Tooth" + str(current_tooth_number), Nodes = Temporary_Toothprint, Closed = True, Placement = Placement(V(current_position_x, current_position_y, 0), Rotation(current_rotation, 0, 0)))])
             self.Extrusions.append(["Tooth" + str(current_tooth_number), Make_an_Extrusion("Sketch_Tooth" + str(current_tooth_number), Extrusion_Name = "Extrusion_Tooth" + str(current_tooth_number), Extrusion_Array = (0,0,self.Gear_Width), Solid = (True))])
