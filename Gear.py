@@ -87,7 +87,7 @@ class Gear:
                  width=1,
                  Additional_Tooth_Width=0,
                  Additional_Tooth_Depth=0):
-        self.Number_of_teeth = teeth
+        self.Number_of_Teeth = teeth
         self.Gear_Width = width
         self.Tooth_Width += Additional_Tooth_Width
         self.Tooth_Depth += Additional_Tooth_Depth
@@ -130,7 +130,6 @@ class Gear:
         print("Tooth depth scale: " + str(tooth_depth_scale))
         print("Tooth width:    " + str(self.Tooth_Width))
         print("Tooth depth: " + str(self.Tooth_Depth))
-        print("Additional tooth depth: " + str(self.Additional_Tooth_Depth))
         print("Temporary Toothprint: " + str(Temporary_Toothprint))
         print("######################################################################################")
         #REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE#
