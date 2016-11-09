@@ -77,15 +77,18 @@ class Gear:
 	Tooth_Depth 			= 0
 	Tooth_Pitch 			= 0
 	Pitch_Line_Offset 		= 0
-	Number_of_Teeth 		= 4
-
-	Gear_Width 				= 1
 
 	Sketches 				= []
 	Extrusions 				= []
 	Cuts 					= []
 
-    def __init__(self, Additional_Tooth_Width=0, Additional_Tooth_Depth=0):
+    def __init__(self,
+                 teeth=6,
+                 width=1,
+                 Additional_Tooth_Width=0,
+                 Additional_Tooth_Depth=0):
+        self.Number_of_teeth = teeth
+        self.Gear_Width = width
         self.Tooth_Width += Additional_Tooth_Width
         self.Tooth_Depth += Additional_Tooth_Depth
 
