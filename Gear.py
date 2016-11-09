@@ -115,7 +115,7 @@ class Gear:
 			print("There are invalid values present. The Gear is not ready to be drawn.")
 			return
 
-        pully_OD = self.Get_Tooth_Spacing()
+        pulley_radius = self.Get_Tooth_Spacing()
 
         tooth_width_scale = self.Tooth_Width / self.Tooth_Width
         tooth_depth_scale = self.Tooth_Depth / self.Tooth_Depth
@@ -132,7 +132,7 @@ class Gear:
         print("######################################################################################")
         #REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE#
 
-        self.Gear_Radius  = sqrt(pow(pully_OD/2, 2) - pow(self.Tooth_Width / 2, 2))
+        self.Gear_Radius  = sqrt(pow(pulley_radius, 2) - pow(self.Tooth_Width / 2, 2))
 
         self.Sketches.append(["Main_Gear_Body", Make_a_Circle_Sketch(Name = "Sketch_Main_Gear_Body", Radius = self.Gear_Radius)])
         self.Extrusions.append(["Main_Gear_Body", Make_an_Extrusion("Sketch_Main_Gear_Body", Extrusion_Name = "Extrusion_Main_Gear_Body", Extrusion_Array = (0,0,self.Gear_Width), Solid = (True))])
@@ -163,7 +163,7 @@ class Gear:
 
 
 	def Get_Tooth_Spacing(self):
-		return (2 * ((self.Number_of_Teeth * self.Tooth_Pitch) / (pi * 2) - self.Pitch_Line_Offset))
+		return ((self.Number_of_Teeth * self.Tooth_Pitch) / (pi * 2) - self.Pitch_Line_Offset)
 
 	def Remove_Cuts(self):
 
