@@ -2,7 +2,7 @@
 # 10/7/2016
 
 from copy import deepcopy
-from math import pow, sqrt, pi, radians, sin, cos
+from math import sqrt, pi, radians, sin, cos
 
 import Draft
 
@@ -132,7 +132,7 @@ class Gear:
         print("######################################################################################")
         #REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE#
 
-        self.Gear_Radius  = sqrt(pow(pulley_radius, 2) - pow(self.Tooth_Width / 2, 2))
+        self.Gear_Radius  = sqrt(pulley_radius**2 - (self.Tooth_Width / 2)**2)   # DJW: what is this about?
 
         self.Sketches.append(["Main_Gear_Body", Make_a_Circle_Sketch(Name = "Sketch_Main_Gear_Body", Radius = self.Gear_Radius)])
         self.Extrusions.append(["Main_Gear_Body", Make_an_Extrusion("Sketch_Main_Gear_Body", Extrusion_Name = "Extrusion_Main_Gear_Body", Extrusion_Array = (0,0,self.Gear_Width), Solid = (True))])
