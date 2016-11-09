@@ -1,8 +1,10 @@
 # Paul Flaten
 # 10/7/2016
 
-import Draft, math
 from copy import deepcopy
+from math import pow, sqrt, pi, radians, sin, cos
+
+import Draft
 
 
 Doc = FreeCAD.ActiveDocument
@@ -189,7 +191,7 @@ class Gear:
 			print("######################################################################################")
 			#REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE#
 
-			self.Gear_Radius  = math.sqrt(math.pow(pully_OD/2, 2) - math.pow((self.Tooth_Width + self.Additional_Tooth_Width) / 2, 2))
+			self.Gear_Radius  = sqrt(pow(pully_OD/2, 2) - pow((self.Tooth_Width + self.Additional_Tooth_Width) / 2, 2))
 
 			self.Sketches.append(["Main_Gear_Body", Make_a_Circle_Sketch(Name = "Sketch_Main_Gear_Body", Radius = self.Gear_Radius)])
 			self.Extrusions.append(["Main_Gear_Body", Make_an_Extrusion("Sketch_Main_Gear_Body", Extrusion_Name = "Extrusion_Main_Gear_Body", Extrusion_Array = (0,0,self.Gear_Width), Solid = (True))])
@@ -204,8 +206,8 @@ class Gear:
 
 			for current_gear in range(0,self.Number_of_Teeth):
 				current_rotation = 0 + (360 / self.Number_of_Teeth) * current_gear
-				current_position_x = self.Gear_Radius * math.cos(math.radians(current_rotation - 90 ))
-				current_position_y = self.Gear_Radius * math.sin(math.radians(current_rotation - 90))
+				current_position_x = self.Gear_Radius * cos(radians(current_rotation - 90 ))
+				current_position_y = self.Gear_Radius * sin(radians(current_rotation - 90))
 
 				self.Sketches.append(["Tooth" + str(current_tooth_number), Make_a_Polygon_Sketch(Name = "Sketch_Tooth" + str(current_tooth_number), Nodes = Temporary_Toothprint, Closed = True, Placement = Placement(V(current_position_x, current_position_y, 0), Rotation(current_rotation, 0, 0)))])
 				self.Extrusions.append(["Tooth" + str(current_tooth_number), Make_an_Extrusion("Sketch_Tooth" + str(current_tooth_number), Extrusion_Name = "Extrusion_Tooth" + str(current_tooth_number), Extrusion_Array = (0,0,self.Gear_Width), Solid = (True))])
@@ -220,7 +222,7 @@ class Gear:
 
 
 	def Get_Tooth_Spacing(self):
-		return (2 * ((self.Number_of_Teeth * self.Tooth_Pitch) / (math.pi * 2) - self.Pitch_Line_Offset))
+		return (2 * ((self.Number_of_Teeth * self.Tooth_Pitch) / (pi * 2) - self.Pitch_Line_Offset))
 
 	def Set_Additional_Tooth_Width(self, new_additional_tooth_width):
 		self.Additional_Tooth_Width = new_additional_tooth_width
