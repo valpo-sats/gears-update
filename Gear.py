@@ -69,7 +69,7 @@ def Make_a_Cut(Base_Object_Name, Tool_Object_Name, Cut_Name = "Unnamed_Cut"):
 	return New_Cut
 
 class Gear:
-	Current_Tooth_Profile 	= []
+    """Base class for building a gear."""
 
 	Tooth_profile_name 		= ""
 	Toothprint 				= []
@@ -79,71 +79,19 @@ class Gear:
 	Additional_Tooth_Depth 	= 0
 	Tooth_Pitch 			= 0
 	Pitch_Line_Offset 		= 0
-	Number_of_Teeth 		= 0
-	Gear_Radius				= 0
+	Number_of_Teeth 		= 4
 
-	Gear_Width 				= 0
+	Gear_Width 				= 1
 
 	Sketches 				= []
 	Extrusions 				= []
 	Cuts 					= []
 
-	def __init__(self, New_Profile = [], Tooth_Width_OVR = 0, Additional_Tooth_Width_OVR = 0, Tooth_Depth_OVR = 0, Tooth_Pitch_OVR = 0, Pitch_Line_Offset_OVR = 0, Number_of_Teeth_OVR = 0, Gear_Radius_OVR = 0, Gear_Width_OVR = 0, ):
-		self.Current_Tooth_Profile = New_Profile
+    def __init__(self, Additional_Tooth_Width_OVR = 0):
+        self.Additional_Tooth_Width = Additional_Tooth_Width_OVR
 
-		for Entry in self.Current_Tooth_Profile:						#Load all values from file
-
-			if Entry[0] == "NAME":
-				self.Tooth_profile_name = Entry[1]
-			elif Entry[0] == "TOOTHPRINT":
-				self.Toothprint = Entry[1]
-			elif Entry[0] == "STD_TOOTH_WIDTH":
-				self.Tooth_Width = Entry[1]
-			elif Entry[0] == "STD_TOOTH_DEPTH":
-				self.Tooth_Depth = Entry[1]
-			elif Entry[0] == "STD_TOOTH_PITCH":
-				self.Tooth_Pitch = Entry[1]
-			elif Entry[0] == "STD_PITCH_LINE_OFFSET":
-				self.Pitch_Line_Offset = Entry[1]
-			elif Entry[0] == "GEAR_WIDTH":
-				self.Gear_Width = Entry[1]
-			elif Entry[0] == "TEETH_NUM":
-				self.Number_of_Teeth = Entry[1]
-			elif Entry[0] == "GEAR_WIDTH":
-				self.Gear_Width = Entry[1]
-
-		if(Tooth_Width_OVR):											#Check for overrides
-			self.Tooth_Width = Tooth_Width_OVR
-
-		if(Additional_Tooth_Width_OVR):
-			self.Additional_Tooth_Width = Additional_Tooth_Width_OVR
-
-		if(Tooth_Depth_OVR):
-			self.Tooth_Depth  = Tooth_Depth_OVR
-
-		if(Tooth_Pitch_OVR):
-			self.Tooth_Pitch = Tooth_Pitch_OVR
-
-		if(Pitch_Line_Offset_OVR):
-			self.Pitch_Line_Offset = Pitch_Line_Offset_OVR
-
-		if(Number_of_Teeth_OVR):
-			self.Number_of_Teeth = Number_of_Teeth_OVR
-		else:
-			self.Number_of_Teeth = 3									#Default number of teeth is 1
-
-		if(Gear_Radius_OVR):
-			self.Gear_Radius = Gear_Radius_OVR
-
-		if(Gear_Width_OVR):
-			self.Gear_Width = Gear_Width_OVR
-		else:
-			self.Gear_Width = 1											#Default gear width is 1
-
-		return
 
 	def Ready_for_Computation(self):
-
 		if self.Toothprint == []:
 			return False
 		elif (self.Tooth_Width + self.Additional_Tooth_Width) < 0:
