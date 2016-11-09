@@ -71,16 +71,16 @@ def Make_a_Cut(Base_Object_Name, Tool_Object_Name, Cut_Name = "Unnamed_Cut"):
 class Gear:
     """Base class for building a gear."""
 
-    Tooth_profile_name     = ""
-    Toothprint             = []
-    Tooth_Width         = 0
-    Tooth_Depth         = 0
-    Tooth_Pitch         = 0
-    Pitch_Line_Offset     = 0
+    Tooth_profile_name = ""
+    Toothprint = []
+    Tooth_Width = 0
+    Tooth_Depth = 0
+    Tooth_Pitch = 0
+    Pitch_Line_Offset = 0
 
-    Sketches             = []
-    Extrusions             = []
-    Cuts                 = []
+    Sketches = []
+    Extrusions = []
+    Cuts = []
 
     def __init__(self,
                  teeth=6,
