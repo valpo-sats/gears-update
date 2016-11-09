@@ -74,9 +74,7 @@ class Gear:
 	Tooth_profile_name 		= ""
 	Toothprint 				= []
 	Tooth_Width 			= 0
-	Additional_Tooth_Width 	= 0
 	Tooth_Depth 			= 0
-	Additional_Tooth_Depth 	= 0
 	Tooth_Pitch 			= 0
 	Pitch_Line_Offset 		= 0
 	Number_of_Teeth 		= 4
@@ -87,18 +85,13 @@ class Gear:
 	Extrusions 				= []
 	Cuts 					= []
 
-    def __init__(self, Additional_Tooth_Width_OVR = 0):
-        self.Additional_Tooth_Width = Additional_Tooth_Width_OVR
+    def __init__(self, Additional_Tooth_Width=0, Additional_Tooth_Depth=0):
+        self.Tooth_Width += Additional_Tooth_Width
+        self.Tooth_Depth += Additional_Tooth_Depth
 
 
 	def Ready_for_Computation(self):
 		if self.Toothprint == []:
-			return False
-		elif (self.Tooth_Width + self.Additional_Tooth_Width) < 0:
-			print("ERROR! Value total tooth width (Tooth_Width + Additional_Tooth_Width) must be greatter than 0")
-			return False
-		elif (self.Tooth_Depth + self.Additional_Tooth_Depth) < 0:
-			print("ERROR! Value total tooth depth (Tooth_Depth + Additional_Tooth_Depth) must be greatter than 0")
 			return False
 		elif self.Tooth_Pitch < 0:
 			print("ERROR! Value Tooth_Pitch must be greatter than 0")
@@ -123,8 +116,8 @@ class Gear:
 		else:
 			pully_OD = self.Get_Tooth_Spacing()
 
-			tooth_width_scale = (self.Tooth_Width + self.Additional_Tooth_Width) / self.Tooth_Width
-			tooth_depth_scale = (self.Tooth_Depth + self.Additional_Tooth_Depth) / self.Tooth_Depth
+			tooth_width_scale = self.Tooth_Width / self.Tooth_Width
+			tooth_depth_scale = self.Tooth_Depth / self.Tooth_Depth
 			Temporary_Toothprint = self.Toothprint
 
 			#REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE#
@@ -132,14 +125,13 @@ class Gear:
 			print("Tooth width scale: " + str(tooth_width_scale))
 			print("Tooth depth scale: " + str(tooth_depth_scale))
 			print("Tooth width:	" + str(self.Tooth_Width))
-			print("Additional tooth width: " + str(self.Additional_Tooth_Width))
 			print("Tooth depth: " + str(self.Tooth_Depth))
 			print("Additional tooth depth: " + str(self.Additional_Tooth_Depth))
 			print("Temporary Toothprint: " + str(Temporary_Toothprint))
 			print("######################################################################################")
 			#REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE#
 
-			self.Gear_Radius  = sqrt(pow(pully_OD/2, 2) - pow((self.Tooth_Width + self.Additional_Tooth_Width) / 2, 2))
+			self.Gear_Radius  = sqrt(pow(pully_OD/2, 2) - pow(self.Tooth_Width / 2, 2))
 
 			self.Sketches.append(["Main_Gear_Body", Make_a_Circle_Sketch(Name = "Sketch_Main_Gear_Body", Radius = self.Gear_Radius)])
 			self.Extrusions.append(["Main_Gear_Body", Make_an_Extrusion("Sketch_Main_Gear_Body", Extrusion_Name = "Extrusion_Main_Gear_Body", Extrusion_Array = (0,0,self.Gear_Width), Solid = (True))])
@@ -171,14 +163,6 @@ class Gear:
 
 	def Get_Tooth_Spacing(self):
 		return (2 * ((self.Number_of_Teeth * self.Tooth_Pitch) / (pi * 2) - self.Pitch_Line_Offset))
-
-	def Set_Additional_Tooth_Width(self, new_additional_tooth_width):
-		self.Additional_Tooth_Width = new_additional_tooth_width
-		return
-
-	def Set_Additional_Tooth_Depth(self, new_additional_tooth_depth):
-		self.Additional_Tooth_Depth = new_additional_tooth_depth
-		return
 
 	def Remove_Cuts(self):
 
