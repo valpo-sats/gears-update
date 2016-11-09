@@ -22,50 +22,50 @@ XL_GEAR_TOOTH_PROFILE = [["NAME", "XL"], ["TOOTHPRINT", XL_GEAR_TOOTHPRINT], ["S
 
 def Remove_Object(Object_Name, Doc_Name = ""):
     if Doc_Name == "":
-        FreeCAD.ActiveDocument.removeObject(Object_Name)
+        Doc.removeObject(Object_Name)
     else:
         FreeCAD.getDocument(Doc_Name).removeObject(Object_Name)
     return
 
-def Make_a_Polygon_Sketch(Name = "Unnamed_Polygon", Nodes = [FreeCAD.Vector(0,0,0)], Closed = False, Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(0,0,0))):
-    New_Polygon = FreeCAD.ActiveDocument.addObject("Part::Polygon", Name)
+def Make_a_Polygon_Sketch(Name = "Unnamed_Polygon", Nodes = [V(0,0,0)], Closed = False, Placement = Placement(V(0,0,0), Rotation(0,0,0))):
+    New_Polygon = Doc.addObject("Part::Polygon", Name)
     New_Polygon.Nodes = Nodes
     New_Polygon.Close = Closed
     New_Polygon.Placement = Placement
-    FreeCAD.ActiveDocument.recompute()
+    Doc.recompute()
     return New_Polygon
 
-def Make_a_Circle_Sketch(Name = "Unnamed_Circle", Radius = 1, Angle0 = 0.0, Angle1 = 0.0, Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(0,0,0))):
-    New_Circle = FreeCAD.ActiveDocument.addObject("Part::Circle", Name)
+def Make_a_Circle_Sketch(Name = "Unnamed_Circle", Radius = 1, Angle0 = 0.0, Angle1 = 0.0, Placement = Placement(V(0,0,0), Rotation(0,0,0))):
+    New_Circle = Doc.addObject("Part::Circle", Name)
     New_Circle.Radius = Radius
     New_Circle.Angle0 = Angle0
     New_Circle.Angle1 = Angle1
     New_Circle.Placement = Placement
-    FreeCAD.ActiveDocument.recompute()
+    Doc.recompute()
     return New_Circle
 
-def Make_an_Extrusion(Target_Sketch_Name, Extrusion_Name = "Unnamed_Extrusion", Extrusion_Array = (0,0,0), Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(0,0,0)), Solid = (False), TaperAngle = (0)):
-    Current_Extrusion = FreeCAD.ActiveDocument.addObject("Part::Extrusion", Extrusion_Name)
-    Current_Extrusion.Base = FreeCAD.ActiveDocument.getObjectsByLabel(Target_Sketch_Name)[0]
+def Make_an_Extrusion(Target_Sketch_Name, Extrusion_Name = "Unnamed_Extrusion", Extrusion_Array = (0,0,0), Placement = Placement(V(0,0,0), Rotation(0,0,0)), Solid = (False), TaperAngle = (0)):
+    Current_Extrusion = Doc.addObject("Part::Extrusion", Extrusion_Name)
+    Current_Extrusion.Base = Doc.getObjectsByLabel(Target_Sketch_Name)[0]
     Current_Extrusion.Dir = Extrusion_Array
     Current_Extrusion.Solid = Solid
     Current_Extrusion.TaperAngle = TaperAngle
     Current_Extrusion.Placement = Placement
-    FreeCAD.ActiveDocument.getObject(Target_Sketch_Name).ViewObject.Visibility = False
-    FreeCAD.ActiveDocument.recompute()
+    Doc.getObject(Target_Sketch_Name).ViewObject.Visibility = False
+    Doc.recompute()
     return Current_Extrusion
 
 def Make_a_Cut(Base_Object_Name, Tool_Object_Name, Cut_Name = "Unnamed_Cut"):
-    Base = FreeCAD.ActiveDocument.getObjectsByLabel(Base_Object_Name)[0]
-    Tool = FreeCAD.ActiveDocument.getObjectsByLabel(Tool_Object_Name)[0]
-    New_Cut = FreeCAD.ActiveDocument.addObject("Part::Cut", Cut_Name)
+    Base = Doc.getObjectsByLabel(Base_Object_Name)[0]
+    Tool = Doc.getObjectsByLabel(Tool_Object_Name)[0]
+    New_Cut = Doc.addObject("Part::Cut", Cut_Name)
     New_Cut.Base = Base
     New_Cut.Tool = Tool
     Base.ViewObject.Visibility = False
     Tool.ViewObject.Visibility = False
     New_Cut.ViewObject.ShapeColor = Base.ViewObject.ShapeColor
     New_Cut.ViewObject.DisplayMode = Base.ViewObject.DisplayMode
-    FreeCAD.ActiveDocument.recompute()
+    Doc.recompute()
     return New_Cut
 
 class Gear:
@@ -169,23 +169,23 @@ class Gear:
 
     def Remove_Cuts(self):
         for Cut in reversed(self.Cuts):
-            FreeCAD.ActiveDocument.removeObject(Cut[1].Label)
+            Doc.removeObject(Cut[1].Label)
         self.Cuts = []
-        FreeCAD.ActiveDocument.recompute()
+        Doc.recompute()
 
 
     def Remove_Extrusions(self):
         for Extrusion in reversed(self.Extrusions):
-            FreeCAD.ActiveDocument.removeObject(Extrusion[1].Label)
+            Doc.removeObject(Extrusion[1].Label)
         self.Extrusions = []
-        FreeCAD.ActiveDocument.recompute()
+        Doc.recompute()
 
 
     def Remove_Sketches(self):
         for Sketch in reversed(self.Sketches):
-            FreeCAD.ActiveDocument.removeObject(Sketch[1].Label)
+            Doc.removeObject(Sketch[1].Label)
         self.Sketches = []
-        FreeCAD.ActiveDocument.recompute()
+        Doc.recompute()
 
 
     def Remove_Gear(self):
