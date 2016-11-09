@@ -111,54 +111,55 @@ class Gear:
 
 	def Draw_Gear(self):
 		if not self.Ready_for_Computation():
+            # better to raise an exception here
 			print("There are invalid values present. The Gear is not ready to be drawn.")
 			return
-		else:
-			pully_OD = self.Get_Tooth_Spacing()
 
-			tooth_width_scale = self.Tooth_Width / self.Tooth_Width
-			tooth_depth_scale = self.Tooth_Depth / self.Tooth_Depth
-			Temporary_Toothprint = self.Toothprint
+        pully_OD = self.Get_Tooth_Spacing()
 
-			#REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE#
-			print("######################################################################################")
-			print("Tooth width scale: " + str(tooth_width_scale))
-			print("Tooth depth scale: " + str(tooth_depth_scale))
-			print("Tooth width:	" + str(self.Tooth_Width))
-			print("Tooth depth: " + str(self.Tooth_Depth))
-			print("Additional tooth depth: " + str(self.Additional_Tooth_Depth))
-			print("Temporary Toothprint: " + str(Temporary_Toothprint))
-			print("######################################################################################")
-			#REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE#
+        tooth_width_scale = self.Tooth_Width / self.Tooth_Width
+        tooth_depth_scale = self.Tooth_Depth / self.Tooth_Depth
+        Temporary_Toothprint = self.Toothprint
 
-			self.Gear_Radius  = sqrt(pow(pully_OD/2, 2) - pow(self.Tooth_Width / 2, 2))
+        #REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE#
+        print("######################################################################################")
+        print("Tooth width scale: " + str(tooth_width_scale))
+        print("Tooth depth scale: " + str(tooth_depth_scale))
+        print("Tooth width:	" + str(self.Tooth_Width))
+        print("Tooth depth: " + str(self.Tooth_Depth))
+        print("Additional tooth depth: " + str(self.Additional_Tooth_Depth))
+        print("Temporary Toothprint: " + str(Temporary_Toothprint))
+        print("######################################################################################")
+        #REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE##REMOVE#
 
-			self.Sketches.append(["Main_Gear_Body", Make_a_Circle_Sketch(Name = "Sketch_Main_Gear_Body", Radius = self.Gear_Radius)])
-			self.Extrusions.append(["Main_Gear_Body", Make_an_Extrusion("Sketch_Main_Gear_Body", Extrusion_Name = "Extrusion_Main_Gear_Body", Extrusion_Array = (0,0,self.Gear_Width), Solid = (True))])
+        self.Gear_Radius  = sqrt(pow(pully_OD/2, 2) - pow(self.Tooth_Width / 2, 2))
 
-			#Temporary_Toothprint = deepcopy(self.Toothprint)
-			#Temporary_Toothprint = self.Toothprint
+        self.Sketches.append(["Main_Gear_Body", Make_a_Circle_Sketch(Name = "Sketch_Main_Gear_Body", Radius = self.Gear_Radius)])
+        self.Extrusions.append(["Main_Gear_Body", Make_an_Extrusion("Sketch_Main_Gear_Body", Extrusion_Name = "Extrusion_Main_Gear_Body", Extrusion_Array = (0,0,self.Gear_Width), Solid = (True))])
 
-			for vector in Temporary_Toothprint:
-				vector.scale(tooth_width_scale, tooth_depth_scale, 1)
+        #Temporary_Toothprint = deepcopy(self.Toothprint)
+        #Temporary_Toothprint = self.Toothprint
 
-			current_tooth_number = 1
+        for vector in Temporary_Toothprint:
+            vector.scale(tooth_width_scale, tooth_depth_scale, 1)
 
-			for current_gear in range(0,self.Number_of_Teeth):
-				current_rotation = 0 + (360 / self.Number_of_Teeth) * current_gear
-				current_position_x = self.Gear_Radius * cos(radians(current_rotation - 90 ))
-				current_position_y = self.Gear_Radius * sin(radians(current_rotation - 90))
+        current_tooth_number = 1
 
-				self.Sketches.append(["Tooth" + str(current_tooth_number), Make_a_Polygon_Sketch(Name = "Sketch_Tooth" + str(current_tooth_number), Nodes = Temporary_Toothprint, Closed = True, Placement = Placement(V(current_position_x, current_position_y, 0), Rotation(current_rotation, 0, 0)))])
-				self.Extrusions.append(["Tooth" + str(current_tooth_number), Make_an_Extrusion("Sketch_Tooth" + str(current_tooth_number), Extrusion_Name = "Extrusion_Tooth" + str(current_tooth_number), Extrusion_Array = (0,0,self.Gear_Width), Solid = (True))])
+        for current_gear in range(0,self.Number_of_Teeth):
+            current_rotation = 0 + (360 / self.Number_of_Teeth) * current_gear
+            current_position_x = self.Gear_Radius * cos(radians(current_rotation - 90 ))
+            current_position_y = self.Gear_Radius * sin(radians(current_rotation - 90))
 
-				if current_tooth_number == 1:
-					self.Cuts.append(["Tooth" + str(current_tooth_number), Make_a_Cut("Extrusion_Main_Gear_Body" , "Extrusion_Tooth" + str(current_tooth_number), Cut_Name = "Cut_Tooth" + str(current_tooth_number))])
-				else:
-					self.Cuts.append(["Tooth" + str(current_tooth_number), Make_a_Cut("Cut_Tooth" + str(current_tooth_number - 1), "Extrusion_Tooth" + str(current_tooth_number), Cut_Name = "Cut_Tooth" + str(current_tooth_number))])
+            self.Sketches.append(["Tooth" + str(current_tooth_number), Make_a_Polygon_Sketch(Name = "Sketch_Tooth" + str(current_tooth_number), Nodes = Temporary_Toothprint, Closed = True, Placement = Placement(V(current_position_x, current_position_y, 0), Rotation(current_rotation, 0, 0)))])
+            self.Extrusions.append(["Tooth" + str(current_tooth_number), Make_an_Extrusion("Sketch_Tooth" + str(current_tooth_number), Extrusion_Name = "Extrusion_Tooth" + str(current_tooth_number), Extrusion_Array = (0,0,self.Gear_Width), Solid = (True))])
 
-				current_tooth_number = current_tooth_number + 1
-			return
+            if current_tooth_number == 1:
+                self.Cuts.append(["Tooth" + str(current_tooth_number), Make_a_Cut("Extrusion_Main_Gear_Body" , "Extrusion_Tooth" + str(current_tooth_number), Cut_Name = "Cut_Tooth" + str(current_tooth_number))])
+            else:
+                self.Cuts.append(["Tooth" + str(current_tooth_number), Make_a_Cut("Cut_Tooth" + str(current_tooth_number - 1), "Extrusion_Tooth" + str(current_tooth_number), Cut_Name = "Cut_Tooth" + str(current_tooth_number))])
+
+            current_tooth_number = current_tooth_number + 1
+        return
 
 
 	def Get_Tooth_Spacing(self):
