@@ -87,37 +87,17 @@ class Gear:
                  width=1,
                  Additional_Tooth_Width=0,
                  Additional_Tooth_Depth=0):
+
+        if not self.Tooth_profile_name:
+            raise NameError("This class must be sub-classed.")
+
         self.Number_of_Teeth = teeth
         self.Gear_Width = width
         self.Tooth_Width += Additional_Tooth_Width
         self.Tooth_Depth += Additional_Tooth_Depth
 
 
-    def Ready_for_Computation(self):
-        if self.Toothprint == []:
-            return False
-        elif self.Tooth_Pitch < 0:
-            print("ERROR! Value Tooth_Pitch must be greatter than 0")
-            return False
-        elif self.Pitch_Line_Offset < 0:
-            print("ERROR! Value Pitch_Line_Offset must be greatter than 0")
-            return False
-        elif self.Number_of_Teeth <= 2:
-            print("ERROR! Value Number_of_Teeth must be greatter than or equal to 2")
-            return False
-        elif self.Gear_Width < 0:
-            print("ERROR! Value Gear_Width must be greatter than 0")
-            return False
-        else:
-            return True
-
-
     def Draw_Gear(self):
-        if not self.Ready_for_Computation():
-            # better to raise an exception here
-            print("There are invalid values present. The Gear is not ready to be drawn.")
-            return
-
         pulley_radius = self.Get_Tooth_Spacing()
 
         tooth_width_scale = self.Tooth_Width / self.Tooth_Width
@@ -208,6 +188,8 @@ class XLGear(Gear):
 ##Test Code. This is not a part of the program!
 #New_Gear = Gear(XL_GEAR_TOOTH_PROFILE, 15, Gear_Width_OVR = 3)                # Will make a gear with radius 11.77520211936695 mm
 #New_Gear.Draw_Gear()
+
+#a = Gear(15, 4)    #raises an exception
 
 g = XLGear(15, 5)
 g.Draw_Gear()
