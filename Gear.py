@@ -191,6 +191,6 @@ class XLGear(Gear):
 
 #a = Gear(15, 4)    #raises an exception
 
-g = XLGear(15, 5)
+g = XLGear(teeth=15, width=12.0)
 g.Draw_Gear()
 
